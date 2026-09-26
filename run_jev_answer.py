@@ -16,7 +16,10 @@ def main():
     blocks = []
     for segment in segments:
         answers = utils.run_decision(model, segment, QUESTIONS)
-        blocks.append(format_segment_line(QUESTIONS, answers))
+        block = format_segment_line(QUESTIONS, answers)
+        print(block)
+        print()
+        blocks.append(block)
     with open(settings.OUTPUT_FILE, "w", encoding="utf-8") as file:
         file.write("\n\n".join(blocks))
 
