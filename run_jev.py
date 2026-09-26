@@ -1,14 +1,12 @@
 from typed_decisions.open_jev import OpenJev
+from questions import QUESTIONS
 
 MODEL_NAME = "com-kotobalabs/open-jev-deberta-v3-large"
-MESSAGE = "Xenophon accompanied the Ten Thousand, a large army of Greek mercenaries hired by Cyrus the Younger, who intended to seize the throne of Persia from his brother, Artaxerxes II. Although Cyrus' mixed army fought to a tactical victory at Cunaxa in Babylon, Cyrus was killed, rendering the actions of the Greeks irrelevant and the expedition a failure."
-QUESTIONS = [
-    {"type": "choice", "instructions": "Was was the purpose of the expedition?",
-     "options": ["fun", "training", "winning a throne", "going for a walk", "experience"]},
-    {"type": "score", "instructions": "How positive is the sentiment of this message?",
-     "options": ["very negative", "negative", "neutral", "positive", "very positive"]},
-    {"type": "noul", "instructions": "This is a history book segment about modern history."},
-]
+MESSAGE_FILE = "input.txt"
+
+def load_message():
+    with open(MESSAGE_FILE, "r", encoding="utf-8") as file:
+        return file.read().strip()
 
 def load_model():
     return OpenJev.from_pretrained(MODEL_NAME)
@@ -53,9 +51,10 @@ def print_report(message, questions, answers):
         print()
 
 def main():
+    message = load_message()
     model = load_model()
-    answers = run_decision(model, MESSAGE, QUESTIONS)
-    print_report(MESSAGE, QUESTIONS, answers)
+    answers = run_decision(model, message, QUESTIONS)
+    print_report(message, QUESTIONS, answers)
 
 if __name__ == "__main__":
     main()
